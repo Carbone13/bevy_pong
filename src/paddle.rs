@@ -1,7 +1,5 @@
-use main;
 use bevy::prelude::*;
 
-pub struct PaddlePlugin;
 
 struct Paddle
 {
@@ -14,6 +12,7 @@ enum PaddlePosition
 	Left, Right,
 }
 
+pub struct PaddlePlugin;
 impl Plugin for PaddlePlugin
 {
 	fn build (&self, app: &mut AppBuilder)
@@ -65,7 +64,7 @@ fn move_paddles
 		{
 			PaddlePosition::Left =>
 				{
-					if keyboard_input.pressed((KeyCode::Z))
+					if keyboard_input.pressed(KeyCode::Z)
 					{
 						direction += 1.0;
 					}
@@ -76,7 +75,7 @@ fn move_paddles
 				}
 			PaddlePosition::Right =>
 				{
-					if keyboard_input.pressed((KeyCode::Up))
+					if keyboard_input.pressed(KeyCode::Up)
 					{
 						direction += 1.0;
 					}
@@ -85,12 +84,11 @@ fn move_paddles
 						direction -= 1.0;
 					}
 				}
-			_ => {}
 		}
 
 		let translation = &mut transform.translation;
 
 		translation.y += time.delta_seconds() * direction * paddle.speed;
-		translation.y = translation.y.min(380.0).max(-380.0);
+		translation.y = translation.y.min(300.0).max(-300.0);
 	}
 }
