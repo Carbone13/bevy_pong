@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-
+use crate::Collider;
 
 struct Paddle
 {
@@ -36,7 +36,8 @@ fn spawn_paddles
 			sprite: Sprite::new(Vec2::new(30.0, 150.0)),
 			..Default::default()
 		})
-		.insert(Paddle { speed: 500.0, position: PaddlePosition::Left });
+		.insert(Paddle { speed: 500.0, position: PaddlePosition::Left })
+		.insert(Collider::Paddle);
 
 	// Spawn the Right Paddle
 	commands
@@ -46,7 +47,8 @@ fn spawn_paddles
 			sprite: Sprite::new(Vec2::new(30.0, 150.0)),
 			..Default::default()
 		})
-		.insert(Paddle { speed: 500.0, position: PaddlePosition::Right });
+		.insert(Paddle { speed: 500.0, position: PaddlePosition::Right })
+		.insert(Collider::Paddle);
 }
 
 fn move_paddles
