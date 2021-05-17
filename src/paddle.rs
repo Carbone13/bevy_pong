@@ -32,7 +32,7 @@ fn spawn_paddles
 	commands
 		.spawn_bundle(SpriteBundle {
 			material: materials.add(Color::rgb(0.5, 0.5, 1.0).into()),
-			transform: Transform::from_xyz(-400.0, 0.0, 0.0),
+			transform: Transform::from_xyz(-450.0, 0.0, 0.0),
 			sprite: Sprite::new(Vec2::new(30.0, 150.0)),
 			..Default::default()
 		})
@@ -43,7 +43,7 @@ fn spawn_paddles
 	commands
 		.spawn_bundle(SpriteBundle {
 			material: materials.add(Color::rgb(0.5, 0.5, 1.0).into()),
-			transform: Transform::from_xyz(400.0, 0.0, 0.0),
+			transform: Transform::from_xyz(450.0, 0.0, 0.0),
 			sprite: Sprite::new(Vec2::new(30.0, 150.0)),
 			..Default::default()
 		})
@@ -91,6 +91,6 @@ fn move_paddles
 		let translation = &mut transform.translation;
 
 		translation.y += time.delta_seconds() * direction * paddle.speed;
-		translation.y = translation.y.min(300.0).max(-300.0);
+		translation.y = translation.y.min(260.0).max(-260.0);
 	}
 }

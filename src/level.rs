@@ -18,8 +18,8 @@ fn spawn_goals
 )
 {
 	let wall_material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
-	let wall_thickness = 5.0;
-	let bounds = &Vec2::new(900.0, 600.0);
+	let wall_thickness = 10.0;
+	let bounds = &Vec2::new(1200.0, 700.0);
 
 	// left
 	commands
@@ -29,7 +29,7 @@ fn spawn_goals
 			sprite: Sprite::new(Vec2::new(wall_thickness.clone(), bounds.y.clone() + wall_thickness.clone())),
 			..Default::default()
 		})
-		.insert(Collider::Solid);
+		.insert(Collider::ScoreLeft);
 	// right
 	commands
 		.spawn_bundle(SpriteBundle {
@@ -38,7 +38,7 @@ fn spawn_goals
 			sprite: Sprite::new(Vec2::new(wall_thickness.clone(), bounds.y.clone() + wall_thickness.clone())),
 			..Default::default()
 		})
-		.insert(Collider::Solid);
+		.insert(Collider::ScoreRight);
 }
 
 fn spawn_walls
@@ -49,7 +49,7 @@ fn spawn_walls
 {
 	let wall_material = materials.add(Color::rgb(0.8, 0.8, 0.8).into());
 	let wall_thickness = 10.0;
-	let bounds = &Vec2::new(900.0, 600.0);
+	let bounds = &Vec2::new(1200.0, 700.0);
 
 	// bottom
 	commands

@@ -1,7 +1,8 @@
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::{collide, Collision};
-use main;
-use crate::Collider;
+use rand::Rng;
+
+use crate::{Collider, Scoreboard};
 
 struct Ball
 {
@@ -54,17 +55,19 @@ fn move_ball
 
 fn ball_collide
 (
-	mut ball_query: Query<(&mut Ball, &Transform, &Sprite)>,
-	collider_query: Query<(Entity, &Collider, &Transform, &Sprite)>,
+	mut scoreboard: ResMut<Scoreboard>,
+	mut ball:      Query<(&mut Transform, &mut Ball, &Sprite)>,
+	mut colliders: Query<(&Transform, Entity, &Collider, &Sprite, Without<Ball>)>,
 )
 {
-	if let Ok((mut ball, ball_transform, sprite)) = ball_query.single_mut()
+	if let Ok((mut ball_transform, mut ball, sprite)) = ball.single_mut()
 	{
+		let mut rng = rand::thread_rng();
 		let ball_size = sprite.size;
 		let velocity = &mut ball.velocity;
 
 		// check collision with walls
-		for (collider_entity, collider, transform, sprite) in collider_query.iter()
+		for (transform, _collider_entity, collider, sprite, _is_ball) in colliders.iter_mut()
 		{
 			let collision = collide
 				(
@@ -76,15 +79,33 @@ fn ball_collide
 
 			if let Some(collision) = collision
 			{
-				// scorable colliders should be despawned and increment the scoreboard on collision
 				if let Collider::ScoreLeft = *collider
 				{
-					println!("Right Paddle Scored");
+					scoreboard.right_score += 1;
+
+					ball.velocity = 400.0 * Vec3::new(rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0), 0.0).normalize();
+					ball_transform.translation = Vec3::new(0.0, 0.0, 1.0);
+
+					break;
 				}
 				if let Collider::ScoreRight = *collider
 				{
-					println!("Left Paddle Scored");
+					scoreboard.left_score += 1;
+
+					ball.velocity = 400.0 * Vec3::new(rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0), 0.0).normalize();
+					ball_transform.translation = Vec3::new(0.0, 0.0, 1.0);
+
+					break;
 				}
+				if let Collider::Paddle = *collider
+				{
+					println!("Hit a paddle, going faster !");
+					velocity.x += velocity.x.signum() * 20.0;
+					velocity.y += velocity.y.signum() * 20.0;
+
+					println!("{}", velocity.x.to_string());
+				}
+
 
 				// reflect the ball when it collides
 				let mut reflect_x = false;
